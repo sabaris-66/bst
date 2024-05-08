@@ -39,7 +39,9 @@ function buildTree(arr, start, end) {
 function Tree() {
   return {
     prettyPrint,
+    insert,
   };
+
   function prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
       return;
@@ -52,11 +54,28 @@ function Tree() {
       prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
     }
   }
+
+  function insert(root, value) {
+    // If the tree is empty, return a new node
+    if (root == null) {
+      root = Node(value);
+      return root;
+    }
+
+    // Otherwise, recur down the tree
+    if (value < root.data) root.left = insert(root.left, value);
+    else if (value > root.data) root.right = insert(root.right, value);
+
+    // Return the (unchanged) node pointer
+    return root;
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
 array = uniqueSort(array);
 console.log(array);
+let a = "abc";
 let root = buildTree(array, 0, array.length - 1);
 let test = Tree();
+test.insert(root, 45);
 test.prettyPrint(root);
