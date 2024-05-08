@@ -40,6 +40,7 @@ function Tree() {
   return {
     prettyPrint,
     insert,
+    find,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -69,6 +70,15 @@ function Tree() {
     // Return the (unchanged) node pointer
     return root;
   }
+
+  function find(root, value) {
+    let findNode = null;
+    if (root == null) return null;
+    else if (root.data == value) findNode = root;
+    else if (root.data < value) findNode = find(root.right, value);
+    else find(root.left, value);
+    return findNode;
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
@@ -79,3 +89,4 @@ let root = buildTree(array, 0, array.length - 1);
 let test = Tree();
 test.insert(root, 45);
 test.prettyPrint(root);
+console.log(test.find(root, 3));
