@@ -45,6 +45,7 @@ function Tree() {
     preOrder,
     inOrder,
     postOrder,
+    height,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -142,6 +143,19 @@ function Tree() {
 
     return out;
   }
+
+  function height(root, node, nodeHeight = 0) {
+    if (root == null) return null;
+
+    if (root.data == node) return nodeHeight;
+    else if (root.data < node) {
+      nodeHeight++;
+      return height(root.right, node, nodeHeight);
+    } else {
+      nodeHeight++;
+      return height(root.left, node, nodeHeight);
+    }
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
@@ -157,3 +171,4 @@ console.log(test.levelOrder(root));
 console.log(test.preOrder(root));
 console.log(test.inOrder(root));
 console.log(test.postOrder(root));
+console.log(test.height(root, 45));
