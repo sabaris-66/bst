@@ -41,6 +41,7 @@ function Tree() {
     prettyPrint,
     insert,
     find,
+    levelOrder,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -79,6 +80,35 @@ function Tree() {
     else find(root.left, value);
     return findNode;
   }
+
+  function levelOrder(root) {
+    const levels = [];
+
+    if (!root) {
+      return levels;
+    }
+
+    const queue = [root];
+    while (queue.length) {
+      const queueLength = queue.length;
+      const level = [];
+
+      for (let i = 0; i < queueLength; i++) {
+        const node = queue.shift();
+
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
+
+        level.push(node.data);
+      }
+      levels.push(level);
+    }
+    return levels;
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
@@ -90,3 +120,4 @@ let test = Tree();
 test.insert(root, 45);
 test.prettyPrint(root);
 console.log(test.find(root, 3));
+console.log(test.levelOrder(root));
