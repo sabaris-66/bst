@@ -43,6 +43,8 @@ function Tree() {
     find,
     levelOrder,
     preOrder,
+    inOrder,
+    postOrder,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -117,6 +119,27 @@ function Tree() {
     out.push(root.data);
     root.left && preOrder(root.left, out);
     root.right && preOrder(root.right, out);
+
+    return out;
+  }
+
+  function inOrder(root, out = []) {
+    if (root === null) return;
+
+    root.left && preOrder(root.left, out);
+    out.push(root.data);
+    root.right && preOrder(root.right, out);
+
+    return out;
+  }
+
+  function postOrder(root, out = []) {
+    if (root === null) return;
+
+    root.left && preOrder(root.left, out);
+    root.right && preOrder(root.right, out);
+    out.push(root.data);
+
     return out;
   }
 }
@@ -132,3 +155,5 @@ test.prettyPrint(root);
 console.log(test.find(root, 3));
 console.log(test.levelOrder(root));
 console.log(test.preOrder(root));
+console.log(test.inOrder(root));
+console.log(test.postOrder(root));
