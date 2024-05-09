@@ -42,6 +42,7 @@ function Tree() {
     insert,
     find,
     levelOrder,
+    preOrder,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -109,6 +110,15 @@ function Tree() {
     }
     return levels;
   }
+
+  function preOrder(root, out = []) {
+    if (root === null) return;
+
+    out.push(root.data);
+    root.left && preOrder(root.left, out);
+    root.right && preOrder(root.right, out);
+    return out;
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
@@ -121,3 +131,4 @@ test.insert(root, 45);
 test.prettyPrint(root);
 console.log(test.find(root, 3));
 console.log(test.levelOrder(root));
+console.log(test.preOrder(root));
