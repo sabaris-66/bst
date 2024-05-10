@@ -45,6 +45,7 @@ function Tree() {
     preOrder,
     inOrder,
     postOrder,
+    depth,
     height,
   };
 
@@ -81,7 +82,7 @@ function Tree() {
     if (root == null) return null;
     else if (root.data == value) findNode = root;
     else if (root.data < value) findNode = find(root.right, value);
-    else find(root.left, value);
+    else findNode = find(root.left, value);
     return findNode;
   }
 
@@ -144,17 +145,48 @@ function Tree() {
     return out;
   }
 
-  function height(root, node, nodeHeight = 0) {
+  function depth(root, node, nodeDepth = 0) {
     if (root == null) return null;
 
-    if (root.data == node) return nodeHeight;
+    if (root.data == node) return nodeDepth;
     else if (root.data < node) {
       nodeHeight++;
-      return height(root.right, node, nodeHeight);
+      return height(root.right, node, nodeDepth);
     } else {
       nodeHeight++;
-      return height(root.left, node, nodeHeight);
+      return height(root.left, node, nodeDepth);
     }
+  }
+
+  function heightOfNode(node) {
+    if (node.left == null && node.right == null) return 0;
+    const queue = [node];
+    let nodeHeight = 0;
+    while (queue.length) {
+      nodeHeight += 1;
+      const queueLength = queue.length;
+
+      for (let i = 0; i < queueLength; i++) {
+        const node = queue.shift();
+
+        if (node.left) {
+          queue.push(node.left);
+        }
+        if (node.right) {
+          queue.push(node.right);
+        }
+      }
+    }
+    return nodeHeight - 1;
+  }
+
+  function height(root, node) {
+    if (root == null) return null;
+
+    if (root.data == node) {
+      return heightOfNode(root, node);
+    } else if (root.data < node) return height(root.right, node);
+    else return height(root.left, node);
   }
 }
 
@@ -172,3 +204,4 @@ console.log(test.preOrder(root));
 console.log(test.inOrder(root));
 console.log(test.postOrder(root));
 console.log(test.height(root, 45));
+console.log(test.height(root, 4));
