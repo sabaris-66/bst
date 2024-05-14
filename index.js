@@ -47,6 +47,7 @@ function Tree() {
     postOrder,
     depth,
     height,
+    isBalanced,
   };
 
   function prettyPrint(node, prefix = "", isLeft = true) {
@@ -188,6 +189,28 @@ function Tree() {
     } else if (root.data < node) return height(root.right, node);
     else return height(root.left, node);
   }
+
+  function getHeight(node) {
+    if (node === null) {
+      return 0;
+    }
+    const leftHeight = getHeight(node.left);
+    const rightHeight = getHeight(node.right);
+    return Math.max(leftHeight, rightHeight) + 1;
+  }
+
+  function isBalanced(root) {
+    if (root === null) {
+      return true;
+    }
+    const leftHeight = getHeight(root.left);
+    const rightHeight = getHeight(root.right);
+    const heightDiff = Math.abs(leftHeight - rightHeight);
+    if (heightDiff > 1) {
+      return false;
+    }
+    return isBalanced(root.left) && isBalanced(root.right);
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
@@ -205,3 +228,4 @@ console.log(test.inOrder(root));
 console.log(test.postOrder(root));
 console.log(test.height(root, 45));
 console.log(test.height(root, 4));
+console.log(test.isBalanced(root));
