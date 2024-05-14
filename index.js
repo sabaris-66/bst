@@ -5,39 +5,14 @@ function Node(data) {
   return { data, left, right };
 }
 
-function uniqueSort(arr) {
-  if (arr.length <= 1) {
-    return arr;
-  }
-  arr = arr.filter((value, index) => {
-    return arr.indexOf(value) === index;
-  });
+function Tree(inputArray) {
+  inputArray = uniqueSort(inputArray);
+  let root = buildTree(inputArray, 0, inputArray.length - 1);
 
-  arr.sort(function (a, b) {
-    return a - b;
-  });
-  return arr;
-}
-
-function buildTree(arr, start, end) {
-  if (start > end) {
-    return null;
-  }
-
-  /* Get the middle element and make it root */
-  let mid = parseInt((start + end) / 2);
-  let node = Node(arr[mid]);
-  /* Recursively construct the left subtree and make it 
-     left child of root */
-  node.left = buildTree(arr, start, mid - 1);
-  /* Recursively construct the right subtree and make it 
-     right child of root */
-  node.right = buildTree(arr, mid + 1, end);
-  return node;
-}
-
-function Tree() {
   return {
+    root,
+    uniqueSort,
+    buildTree,
     prettyPrint,
     insert,
     find,
@@ -48,7 +23,39 @@ function Tree() {
     depth,
     height,
     isBalanced,
+    reBalance,
   };
+
+  function uniqueSort(arr) {
+    if (arr.length <= 1) {
+      return arr;
+    }
+    arr = arr.filter((value, index) => {
+      return arr.indexOf(value) === index;
+    });
+
+    arr.sort(function (a, b) {
+      return a - b;
+    });
+    return arr;
+  }
+
+  function buildTree(arr, start, end) {
+    if (start > end) {
+      return null;
+    }
+
+    /* Get the middle element and make it root */
+    let mid = parseInt((start + end) / 2);
+    let node = Node(arr[mid]);
+    /* Recursively construct the left subtree and make it 
+     left child of root */
+    node.left = buildTree(arr, start, mid - 1);
+    /* Recursively construct the right subtree and make it 
+     right child of root */
+    node.right = buildTree(arr, mid + 1, end);
+    return node;
+  }
 
   function prettyPrint(node, prefix = "", isLeft = true) {
     if (node === null) {
@@ -211,21 +218,27 @@ function Tree() {
     }
     return isBalanced(root.left) && isBalanced(root.right);
   }
+
+  function reBalance(root) {
+    newArray = inOrder(root);
+    newArray = uniqueSort(newArray);
+    root = buildTree(newArray, 0, newArray.length - 1);
+    return root;
+  }
 }
 
 let array = [1, 2, 10, 4, 5, 1, 4, 7];
-array = uniqueSort(array);
-console.log(array);
-let a = "abc";
-let root = buildTree(array, 0, array.length - 1);
-let test = Tree();
-test.insert(root, 45);
-test.prettyPrint(root);
-console.log(test.find(root, 3));
-console.log(test.levelOrder(root));
-console.log(test.preOrder(root));
-console.log(test.inOrder(root));
-console.log(test.postOrder(root));
-console.log(test.height(root, 45));
-console.log(test.height(root, 4));
-console.log(test.isBalanced(root));
+let test = Tree(array);
+console.log(test.root);
+test.insert(test.root, 45);
+test.prettyPrint(test.root);
+console.log(test.find(test.root, 3));
+console.log(test.levelOrder(test.root));
+console.log(test.preOrder(test.root));
+console.log(test.inOrder(test.root));
+console.log(test.postOrder(test.root));
+console.log(test.height(test.root, 45));
+console.log(test.height(test.root, 4));
+console.log(test.isBalanced(test.root));
+console.log(test.reBalance(test.root));
+test.prettyPrint(test.root);
